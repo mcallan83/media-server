@@ -1,0 +1,9 @@
+server {
+    listen   80;
+    server_name    _;
+    access_log  /var/log/nginx/access.log;
+    location / {
+        proxy_pass http://localhost:8112;
+        include         /etc/nginx/proxy.conf;
+    }
+}
