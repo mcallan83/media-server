@@ -18,6 +18,7 @@ wget -q http://www.webmin.com/jcameron-key.asc -O- | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install webmin -y
 sudo sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+sudo /etc/init.d/webmin restart
 
 # Install Sonarr
 sudo add-apt-repository -y ppa:ermshiperete/monodevelop
@@ -49,3 +50,6 @@ sudo sed -i 's/env gid=GROUP/env gid='$UGROUP'/g' /etc/init/deluge.conf
 sudo cp templates/deluge/deluge-web.conf /etc/init/deluge-web.conf
 sudo sed -i 's/env uid=USER/env uid='$UNAME'/g' /etc/init/deluge-web.conf
 sudo sed -i 's/env gid=GROUP/env gid='$UGROUP'/g' /etc/init/deluge-web.conf
+
+sudo start deluge
+sudo start deluge-web
