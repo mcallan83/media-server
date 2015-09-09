@@ -54,16 +54,3 @@ sudo sed -i 's/env gid=GROUP/env gid='$UGROUP'/g' /etc/init/deluge-web.conf
 
 sudo start deluge
 sudo start deluge-web
-
-# Install Jackett
-sudo apt-get install libcurl4-openssl-dev bzip2 -y
-wget https://jackett.net/Download/v0.6.4/Jackett.Mono.v0.6.4.tar.bz2
-tar -xvf Jackett.Mono.v0.6.4.tar.bz2
-sudo mkdir /opt/jackett
-sudo chown -R $UNAME:$UNAME /opt/jackett
-
-sudo cp templates/jackett/jackett-init /etc/init.d/jackett
-sudo sed -i 's/RUN_AS=USERNAME/RUN_AS='$UNAME'/g' /etc/init.d/jackett
-sudo chmod +x /etc/init.d/jackett
-sudo update-rc.d jackett defaults
-sudo service jackett start
