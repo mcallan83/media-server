@@ -66,3 +66,9 @@ sudo apt-get update -y
 sudo apt-get install plexmediaserver -y
 sudo sed -i 's/PLEX_MEDIA_SERVER_USER=plex/PLEX_MEDIA_SERVER_USER='$UNAME'/g' /etc/default/plexmediaserver
 sudo service plexmediaserver restart
+
+# Install Nginx
+sudo apt-get update -y
+sudo apt-get install -y nginx
+sudo update-rc.d nginx defaults
+
