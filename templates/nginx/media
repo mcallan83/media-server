@@ -21,6 +21,13 @@ server {
   }
 
   # webmin
+  location /sonarr {
+      proxy_pass http://localhost:8989;
+      include /etc/nginx/proxy.conf;
+  }
+
+
+  # webmin
   location /webmin {
       proxy_pass http://localhost:10000;
       include /etc/nginx/proxy.conf;
