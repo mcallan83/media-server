@@ -6,6 +6,9 @@ sudo -v
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
+echo -n 'Choose a password that will be used to secure various servers:'
+read UPASS
+
 # Install Avahi
 sudo apt-get install avahi-daemon -y
 sudo service avahi-daemon restart
@@ -76,12 +79,15 @@ sudo service plexmediaserver restart
 
 # Install Nginx
 sudo apt-get update -y
-sudo apt-get install -y nginx
+sudo apt-get install -y nginx apache2-utils
 sudo update-rc.d nginx defaults
 
 sudo rm /etc/nginx/sites-available/default
 sudo cp templates/nginx/proxy.conf /etc/nginx/proxy.conf
+sudo cp templates/nginx/auth.conf /etc/nginx/auth.conf
 sudo cp templates/nginx/media /etc/nginx/sites-available/media
 cd /etc/nginx/sites-enabled
 sudo ln -s /etc/nginx/sites-available/media media
 sudo service nginx restart
+
+htpasswd -b -c /etc/nginx/htpasswd media $UPASS

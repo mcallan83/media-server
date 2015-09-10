@@ -10,6 +10,7 @@ server {
       rewrite ^/$ http://$http_host/web/index.html;
     }
     include /etc/nginx/proxy.conf;
+    include /etc/nginx/auth.conf;
   }
 
   # deluge
@@ -18,12 +19,14 @@ server {
     proxy_set_header  X-Deluge-Base "/deluge/";
     proxy_cookie_path / /deluge;
     include /etc/nginx/proxy.conf;
+    include /etc/nginx/auth.conf;
   }
 
   # sonarr
   location /sonarr {
       proxy_pass http://localhost:8989;
       include /etc/nginx/proxy.conf;
+      include /etc/nginx/auth.conf;
   }
 
   # webmin
