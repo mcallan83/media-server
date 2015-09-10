@@ -72,6 +72,9 @@ sudo apt-get upgrade -y
 # sudo apt-get install -y nginx
 # sudo update-rc.d nginx defaults
 
+sudo rm /etc/nginx/sites-available/default
 sudo cp templates/nginx/proxy.conf /etc/nginx/proxy.conf
-sudp cp templates/nginx/media /etc/nginx/sites-enabled/media
+sudo cp templates/nginx/media /etc/nginx/sites-available/media
+cd /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/media media
 sudo service nginx restart
