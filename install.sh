@@ -39,6 +39,8 @@ sudo chmod +x /etc/init.d/nzbdrone
 sudo update-rc.d nzbdrone defaults
 sudo service nzbdrone start >/dev/null 2>&1
 
+sudo sed -i 's/<Port>8989<\/Port>/<Port>8989<\/Port>\n  <UrlBase>sonarr<\/UrlBase>/g' /home/media/.config/NzbDrone/config.xml
+
 # Install Deluge
 sudo add-apt-repository -y ppa:deluge-team/ppa
 sudo apt-get update -y
