@@ -90,4 +90,4 @@ cd /etc/nginx/sites-enabled
 sudo ln -s /etc/nginx/sites-available/media media
 sudo service nginx restart
 
-htpasswd -b -c /etc/nginx/htpasswd media $UPASS
+sudo htpasswd -b -c /etc/nginx/htpasswd media $UPASS
