@@ -1,12 +1,18 @@
-upstream plex {
-  server 127.0.0.1:32400;
-}
-
 server {
   listen   80;
   server_name    _;
   access_log  /var/log/nginx/access.log;
 
+  # plex
+  location / {
+    proxy_pass http://127.0.0.1:32400;
+    if ($http_x_plex_device_name = '') {
+      rewrite ^/$ http://$http_host/web/index.html;
+    }
+    include /etc/nginx/proxy.conf;
+  }
+
+  # deluge
   location /deluge {
     proxy_pass  http://127.0.0.1:8112/;
     proxy_set_header  X-Deluge-Base "/deluge/";
@@ -14,18 +20,9 @@ server {
     include /etc/nginx/proxy.conf;
   }
 
-  # location /plex {
-  #     proxy_pass http://localhost:32400;
-  #     include /etc/nginx/proxy.conf;
-  # }
-
-  # location /sonarr {
-  #     proxy_pass http://localhost:8989;
-  #     include /etc/nginx/proxy.conf;
-  # }
-
-  # location /webmin {
-  #     proxy_pass http://localhost:10000;
-  #     include /etc/nginx/proxy.conf;
-  # }
+  # webmin
+  location /webmin {
+      proxy_pass http://localhost:10000;
+      include /etc/nginx/proxy.conf;
+  }
 }
