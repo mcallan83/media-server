@@ -20,16 +20,16 @@ server {
     include /etc/nginx/proxy.conf;
   }
 
-  # webmin
+  # sonarr
   location /sonarr {
       proxy_pass http://localhost:8989;
       include /etc/nginx/proxy.conf;
   }
 
-
   # webmin
-  location /webmin {
-      proxy_pass http://localhost:10000;
+  location /webmin/ {
+      proxy_pass http://localhost:10000/;
       include /etc/nginx/proxy.conf;
+      proxy_redirect http://$host:10000/ /webmin/;
   }
 }
