@@ -19,8 +19,9 @@ sudo apt-get update -y
 sudo apt-get install webmin -y
 sudo sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
 
-echo "webprefix=/webmin" | sudo tee -a /etc/webmin/config
-echo "webprefixnoredir=1" | sudo tee -a /etc/webmin/config
+# diabled until webmin works under nginx reverse proxy
+# echo "webprefix=/webmin" | sudo tee -a /etc/webmin/config
+# echo "webprefixnoredir=1" | sudo tee -a /etc/webmin/config
 
 sudo /etc/init.d/webmin restart
 
