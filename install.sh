@@ -102,9 +102,14 @@ sudo mkdir /opt/jackett
 sudo mv Jackett/* /opt/jackett
 sudo chown -R $UNAME: /opt/jackett
 
-sudo cp templates/jackett/jackett /etc/init.d/jackett
-sudo sed -i 's/RUN_AS=username/RUN_AS='$UNAME'/g' /etc/init.d/jackett
-sudo chmod +x /etc/init.d/jackett
-sudo update-rc.d jackett defaults
-sudo service jackett start
+sudo cp templates/jackett/jackett.conf /etc/init/jackett.conf
+sudo sed -i 's/env uid=USER/env uid='$UNAME'/g' /etc/init/jackett.conf
+sudo sed -i 's/env gid=GROUP/env gid='$UGROUP'/g' /etc/init/jackett.conf
+sudo start jackett
+
+# sudo cp templates/jackett/jackett /etc/init.d/jackett
+# sudo sed -i 's/RUN_AS=username/RUN_AS='$UNAME'/g' /etc/init.d/jackett
+# sudo chmod +x /etc/init.d/jackett
+# sudo update-rc.d jackett defaults
+# sudo service jackett start
 
