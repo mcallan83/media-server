@@ -1,4 +1,4 @@
-UNAME=$(whoami)
+mediaUNAME=$(whoami)
 UGROUP=$(id -gn $UNAME)
 
 sudo -v
@@ -93,8 +93,8 @@ sudo service nginx restart
 sudo htpasswd -b -c /etc/nginx/htpasswd media $UPASS
 
 # Install Jackett
-wget http://jackett.net/Download/v0.6.4/Jackett.Mono.v0.6.4.tar.bz2
-tar -xvf Jackett.Mono.v0.6.4.tar.bz2
+sudo wget http://jackett.net/Download/v0.6.4/Jackett.Mono.v0.6.4.tar.bz2
+sudo tar -xvf Jackett.Mono.v0.6.4.tar.bz2
 sudo mkdir /opt/jackett
 sudo mv Jackett/* /opt/jackett
 sudo chown -R $UNAME:$UGROUP /opt/jackett
