@@ -88,9 +88,11 @@ sudo cp templates/nginx/auth.conf /etc/nginx/auth.conf
 sudo cp templates/nginx/media /etc/nginx/sites-available/media
 cd /etc/nginx/sites-enabled
 sudo ln -s /etc/nginx/sites-available/media media
+cd -
 sudo service nginx restart
 
 sudo htpasswd -b -c /etc/nginx/htpasswd media $UPASS
+
 
 # Install Jackett
 sudo apt-get install libcurl4-openssl-dev bzip2 -y
