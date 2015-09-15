@@ -16,8 +16,10 @@ sudo apt-get install apt-transport-https -y
 sudo apt-get install avahi-daemon -y
 sudo apt-get install bzip2 -y
 sudo apt-get install curl -y 
+sudo apt-get install git-core -y 
 sudo apt-get install libcurl4-openssl-dev -y 
 sudo apt-get install nginx -y
+sudo apt-get install python -y
 sudo apt-get install upstart -y
 
 # Avahi
@@ -80,6 +82,20 @@ sudo apt-get install plexmediaserver -y
 sudo sed -i 's/PLEX_MEDIA_SERVER_USER=plex/PLEX_MEDIA_SERVER_USER='$UNAME'/g' /etc/default/plexmediaserver
 
 sudo service plexmediaserver restart
+
+# Couchpotato
+cd /opt
+sudo git clone https://github.com/RuudBurger/CouchPotatoServer.git
+
+sudo chown -R $UNAME: /opt/CouchPotatoServer
+sudo chmod -R 755 /opt/CouchPotatoServer
+
+sudo cp $SCRIPTPATH/templates/couchpotato/couchpotato.conf /etc/init/couchpotato.conf
+sudo sed -i 's/env uid=USER/env uid='$UNAME'/g' /etc/init/couchpotato.conf
+sudo sed -i 's/env gid=GROUP/env gid='$UGROUP'/g' /etc/init/couchpotato.conf
+sudo chmod +x /etc/init/couchpotato.conf
+
+sudo start couchpotato
 
 # Nginx
 sudo update-rc.d nginx defaults
