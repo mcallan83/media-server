@@ -93,11 +93,12 @@ sudo service nginx restart
 sudo htpasswd -b -c /etc/nginx/htpasswd media $UPASS
 
 # Install Jackett
+sudo apt-get install libcurl4-openssl-dev bzip2 -y
 sudo wget http://jackett.net/Download/v0.6.4/Jackett.Mono.v0.6.4.tar.bz2
 sudo tar -xvf Jackett.Mono.v0.6.4.tar.bz2
 sudo mkdir /opt/jackett
 sudo mv Jackett/* /opt/jackett
-sudo chown -R $UNAME:$UGROUP /opt/jackett
+sudo chown -R $UNAME: /opt/jackett
 
 sudo cp templates/jackett/jackett /etc/init.d/jackett
 sudo sed -i 's/RUN_AS=username/RUN_AS='$UNAME'/g' /etc/init.d/jackett
