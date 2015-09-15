@@ -73,7 +73,9 @@ sudo curl http://shell.ninthgate.se/packages/shell-ninthgate-se-keyring.key | su
 echo "deb http://www.deb-multimedia.org wheezy main non-free" | sudo tee -a /etc/apt/sources.list.d/deb-multimedia.list
 echo "deb http://shell.ninthgate.se/packages/debian wheezy main" | sudo tee -a /etc/apt/sources.list.d/plex.list
 sudo apt-get update -y
-sudo apt-get install deb-multimedia-keyring plexmediaserver -y
+sudo apt-get install deb-multimedia-keyring -y --force-yes
+sudo apt-get update -y
+sudo apt-get install plexmediaserver -y
 
 sudo sed -i 's/PLEX_MEDIA_SERVER_USER=plex/PLEX_MEDIA_SERVER_USER='$UNAME'/g' /etc/default/plexmediaserver
 
