@@ -10,6 +10,6 @@
 ## Ports
 
 - Deluge: 8112
+- Jackett: 9117
 - Plex: 32400
 - Sonarr: 8989
-- Webmin: 10000

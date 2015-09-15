@@ -29,10 +29,4 @@ server {
       include /etc/nginx/auth.conf;
   }
 
-  # webmin
-  #location /webmin/ {
-  #    proxy_pass http://localhost:10000/;
-  #    include /etc/nginx/proxy.conf;
-  #    proxy_redirect http://$host/ /webmin/;
-  #}
 }
