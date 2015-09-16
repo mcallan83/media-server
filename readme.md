@@ -2,7 +2,7 @@
 
 Bootstraps the installation of a complete media server with support for automatically downloading, managing, and streaming TV shows and movies.
 
-This script has been tested with Ubuntu Server. All install applications are available via web based control panels.
+This script has been tested with Ubuntu Server. Installed applications are available via web based control panels.
 
 ## Included Software
 
@@ -12,7 +12,11 @@ This script has been tested with Ubuntu Server. All install applications are ava
 - [Plex](https://plex.tv/) Organizes your video, music, and photo collections and streams them to all of your screens.
 - [Sonarr](https://sonarr.tv/) Smart PVR for newsgroup and BitTorrent users.
 
-## Web Access
+## Installation & Config
+
+TBD
+
+## Web Access Ports
 
 - Couchpotato: 5050
 - Deluge: 8112
@@ -25,3 +29,4 @@ This script has been tested with Ubuntu Server. All install applications are ava
 - [http://www.cuttingcords.com/home/ultimate-server/getting-started](http://www.cuttingcords.com/home/ultimate-server/getting-started)
 - [http://www.htpcbeginner.com/](http://www.htpcbeginner.com/)
 - [https://gist.github.com/spikegrobstein/4384954](https://gist.github.com/spikegrobstein/4384954)
+- [https://github.com/jknight2014/Kodi-IPVR-setup-script/](https://github.com/jknight2014/Kodi-IPVR-setup-script/)
