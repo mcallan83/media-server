@@ -79,7 +79,7 @@ sudo chmod +x /etc/init/sonarr.conf
 
 #sudo sed -i 's/<Port>8989<\/Port>/<Port>8989<\/Port>\n  <UrlBase>sonarr<\/UrlBase>/g' /home/$UNAME/.config/NzbDrone/config.xml
 
-sudo start sonarr
+sudo service sonarr start
 
 
 ################################################################################
@@ -102,7 +102,7 @@ exec mono /opt/jackett/JackettConsole.exe
 EOF
 sudo chmod +x /etc/init/jackett.conf
 
-sudo start jackett
+sudo service jackett start
 
 
 ################################################################################
@@ -135,8 +135,8 @@ exec start-stop-daemon -S -c $uid:$gid -k $umask -x /usr/bin/deluge-web
 EOF
 sudo chmod +x /etc/init/deluge-web.conf
 
-sudo start deluge
-sudo start deluge-web
+sudo service deluge start
+sudo service deluge-web start
 
 
 ################################################################################
@@ -176,7 +176,7 @@ exec python /opt/couchpotato/CouchPotato.py
 EOF
 sudo chmod +x /etc/init/couchpotato.conf
 
-sudo start couchpotato
+sudo service couchpotato start
 
 ################################################################################
 # Nginx
