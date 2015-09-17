@@ -117,10 +117,7 @@ sudo tee "/etc/init/deluge.conf" > /dev/null <<EOF
 description "Upstart Script: Deluge"
 start on runlevel [2345]
 stop on runlevel [016]
-env uid=$UNAME
-env gid=$UGROUP
-env umask=022
-exec start-stop-daemon -S -c $uid:$gid -k $umask -x /usr/bin/deluged -- -d
+exec start-stop-daemon -S -c $UNAME:$UGROUP -k 022 -x /usr/bin/deluged -- -d
 EOF
 sudo chmod +x /etc/init/deluge.conf
 
@@ -128,10 +125,7 @@ sudo tee "/etc/init/deluge-web.conf" > /dev/null <<EOF
 description "Upstart Script: Deluge Web"
 start on started deluge
 stop on stopping deluge
-env uid=$UNAME
-env gid=$UGROUP
-env umask=027
-exec start-stop-daemon -S -c $uid:$gid -k $umask -x /usr/bin/deluge-web
+exec start-stop-daemon -S -c $UNAME:$UGROUP -k 027 -x /usr/bin/deluge-web
 EOF
 sudo chmod +x /etc/init/deluge-web.conf
 
