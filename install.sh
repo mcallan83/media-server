@@ -67,6 +67,7 @@ echo "deb https://apt.sonarr.tv/ master main" | sudo tee -a /etc/apt/sources.lis
 sudo apt-get update
 sudo apt-get install nzbdrone -y
 
+sudo touch /etc/init/sonarr.conf
 cat << 'EOF' | sudo tee /etc/init/sonarr.conf
 'description "Upstart Script: Sonarr"'
 start on runlevel [2345]
@@ -92,6 +93,7 @@ sudo mkdir /opt/jackett
 sudo mv Jackett/* /opt/jackett
 sudo chown -R $UNAME: /opt/jackett
 
+sudo touch /etc/init/jackett.conf
 cat << 'EOF' | sudo tee /etc/init/jackett.conf
 'description "Upstart Script: Jackett"'
 start on runlevel [2345]
@@ -113,6 +115,7 @@ sudo add-apt-repository -y ppa:deluge-team/ppa
 sudo apt-get update -y
 sudo apt-get install deluged deluge-webui -y
 
+sudo touch /etc/init/deluge.conf
 cat << 'EOF' | sudo tee /etc/init/deluge.conf
 'description "Upstart Script: Deluge"'
 start on runlevel [2345]
@@ -124,6 +127,7 @@ exec start-stop-daemon -S -c $uid:$gid -k $umask -x /usr/bin/deluged -- -d
 EOF
 sudo chmod +x /etc/init/deluge.conf
 
+sudo touch /etc/init/deluge-web.conf
 cat << 'EOF' | sudo tee /etc/init/deluge-web.conf
 'description "Upstart Script: Deluge Web"'
 start on started deluge
@@ -166,6 +170,7 @@ sudo git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
 sudo chown -R $UNAME: /opt/couchpotato
 sudo chmod -R 755 /opt/couchpotato
 
+sudo touch /etc/init/couchpotato.conf
 cat << 'EOF' | sudo tee /etc/init/couchpotato.conf
 'description "Upstart Script: CouchPotato"'
 start on runlevel [2345]
