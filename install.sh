@@ -68,7 +68,7 @@ sudo apt-get update
 sudo apt-get install nzbdrone -y
 
 sudo tee "/etc/init/sonarr.conf" > /dev/null <<EOF
-'description "Upstart Script: Sonarr"'
+description "Upstart Script: Sonarr"
 start on runlevel [2345]
 stop on runlevel [016]
 setuid $UNAME
@@ -93,7 +93,7 @@ sudo mv Jackett/* /opt/jackett
 sudo chown -R $UNAME: /opt/jackett
 
 sudo tee "/etc/init/jackett.conf" > /dev/null <<EOF
-'description "Upstart Script: Jackett"'
+description "Upstart Script: Jackett"
 start on runlevel [2345]
 stop on runlevel [016]
 setuid $UNAME
@@ -114,7 +114,7 @@ sudo apt-get update -y
 sudo apt-get install deluged deluge-webui -y
 
 sudo tee "/etc/init/deluge.conf" > /dev/null <<EOF
-'description "Upstart Script: Deluge"'
+description "Upstart Script: Deluge"
 start on runlevel [2345]
 stop on runlevel [016]
 env uid=$UNAME
@@ -125,7 +125,7 @@ EOF
 sudo chmod +x /etc/init/deluge.conf
 
 sudo tee "/etc/init/deluge-web.conf" > /dev/null <<EOF
-'description "Upstart Script: Deluge Web"'
+description "Upstart Script: Deluge Web"
 start on started deluge
 stop on stopping deluge
 env uid=$UNAME
@@ -167,7 +167,7 @@ sudo chown -R $UNAME: /opt/couchpotato
 sudo chmod -R 755 /opt/couchpotato
 
 sudo tee "/etc/init/couchpotato.conf" > /dev/null <<EOF
-'description "Upstart Script: CouchPotato"'
+description "Upstart Script: CouchPotato"
 start on runlevel [2345]
 stop on runlevel [016]
 setuid $UNAME
