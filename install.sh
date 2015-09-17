@@ -52,6 +52,18 @@ sudo apt-get install upstart -y
 
 
 ################################################################################
+# Ajenti
+################################################################################
+
+wget http://repo.ajenti.org/debian/key -O- | sudo apt-key add -
+echo "deb http://repo.ajenti.org/ng/debian main main ubuntu" | sudo tee -a /etc/apt/sources.list
+sudo apt-get update -y
+sudo apt-get install ajenti -y
+
+sudo service ajenti restart
+
+
+################################################################################
 # Avahi
 ################################################################################
 
@@ -59,50 +71,26 @@ sudo service avahi-daemon restart
 
 
 ################################################################################
-# Sonarr
+# Couch Potato
 ################################################################################
 
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC
-echo "deb https://apt.sonarr.tv/ master main" | sudo tee -a /etc/apt/sources.list
-sudo apt-get update
-sudo apt-get install nzbdrone -y
+cd /opt
+sudo git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
 
-sudo tee "/etc/init/sonarr.conf" > /dev/null <<EOF
-description "Upstart Script: Sonarr"
+sudo chown -R $UNAME: /opt/couchpotato
+sudo chmod -R 755 /opt/couchpotato
+
+sudo tee "/etc/init/couchpotato.conf" > /dev/null <<EOF
+description "Upstart Script: CouchPotato"
 start on runlevel [2345]
 stop on runlevel [016]
 setuid $UNAME
 setgid $UGROUP
-exec mono /opt/NzbDrone/NzbDrone.exe
+exec python /opt/couchpotato/CouchPotato.py
 EOF
-sudo chmod +x /etc/init/sonarr.conf
+sudo chmod +x /etc/init/couchpotato.conf
 
-#sudo sed -i 's/<Port>8989<\/Port>/<Port>8989<\/Port>\n  <UrlBase>sonarr<\/UrlBase>/g' /home/$UNAME/.config/NzbDrone/config.xml
-
-sudo service sonarr start
-
-
-################################################################################
-# Jackett
-################################################################################
-
-sudo wget http://jackett.net/Download/v0.6.4/Jackett.Mono.v0.6.4.tar.bz2
-sudo tar -xvf Jackett.Mono.v0.6.4.tar.bz2
-sudo mkdir /opt/jackett
-sudo mv Jackett/* /opt/jackett
-sudo chown -R $UNAME: /opt/jackett
-
-sudo tee "/etc/init/jackett.conf" > /dev/null <<EOF
-description "Upstart Script: Jackett"
-start on runlevel [2345]
-stop on runlevel [016]
-setuid $UNAME
-setgid $UGROUP
-exec mono /opt/jackett/JackettConsole.exe
-EOF
-sudo chmod +x /etc/init/jackett.conf
-
-sudo service jackett start
+sudo service couchpotato start
 
 
 ################################################################################
@@ -132,6 +120,28 @@ sudo chmod +x /etc/init/deluge-web.conf
 sudo service deluge start
 sudo service deluge-web start
 
+################################################################################
+# Jackett
+################################################################################
+
+sudo wget http://jackett.net/Download/v0.6.4/Jackett.Mono.v0.6.4.tar.bz2
+sudo tar -xvf Jackett.Mono.v0.6.4.tar.bz2
+sudo mkdir /opt/jackett
+sudo mv Jackett/* /opt/jackett
+sudo chown -R $UNAME: /opt/jackett
+
+sudo tee "/etc/init/jackett.conf" > /dev/null <<EOF
+description "Upstart Script: Jackett"
+start on runlevel [2345]
+stop on runlevel [016]
+setuid $UNAME
+setgid $UGROUP
+exec mono /opt/jackett/JackettConsole.exe
+EOF
+sudo chmod +x /etc/init/jackett.conf
+
+sudo service jackett start
+
 
 ################################################################################
 # Plex
@@ -151,26 +161,28 @@ sudo service plexmediaserver restart
 
 
 ################################################################################
-# Couch Potato
+# Sonarr
 ################################################################################
 
-cd /opt
-sudo git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC
+echo "deb https://apt.sonarr.tv/ master main" | sudo tee -a /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get install nzbdrone -y
 
-sudo chown -R $UNAME: /opt/couchpotato
-sudo chmod -R 755 /opt/couchpotato
-
-sudo tee "/etc/init/couchpotato.conf" > /dev/null <<EOF
-description "Upstart Script: CouchPotato"
+sudo tee "/etc/init/sonarr.conf" > /dev/null <<EOF
+description "Upstart Script: Sonarr"
 start on runlevel [2345]
 stop on runlevel [016]
 setuid $UNAME
 setgid $UGROUP
-exec python /opt/couchpotato/CouchPotato.py
+exec mono /opt/NzbDrone/NzbDrone.exe
 EOF
-sudo chmod +x /etc/init/couchpotato.conf
+sudo chmod +x /etc/init/sonarr.conf
 
-sudo service couchpotato start
+#sudo sed -i 's/<Port>8989<\/Port>/<Port>8989<\/Port>\n  <UrlBase>sonarr<\/UrlBase>/g' /home/$UNAME/.config/NzbDrone/config.xml
+
+sudo service sonarr start
+
 
 ################################################################################
 # Nginx
