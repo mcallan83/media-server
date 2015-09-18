@@ -127,6 +127,9 @@ sudo mkdir /opt/jackett
 sudo mv Jackett/* /opt/jackett
 sudo chown -R $UNAME: /opt/jackett
 
+rm Jackett.Mono.v0.6.4.tar.bz2
+rm -rf Jackett
+
 sudo tee "/etc/init/jackett.conf" > /dev/null <<EOF
 description "Upstart Script: Jackett"
 start on runlevel [2345]
