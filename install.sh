@@ -261,12 +261,18 @@ server {
   }
   # jackett
   location /jackett {
-    rewrite (/jackett)$ / break;
-    rewrite /jackett/(.*) /$1 break;
-    proxy_pass http://localhost:9177;
-    proxy_redirect /        /jackett/;
+    proxy_pass http://localhost:9117;
     include /etc/nginx/proxy.conf;
+    proxy_redirect /        /jackett/;
+    rewrite /jackett$ / break;
+    rewrite /jackett/(.*) /$1 break;
     include /etc/nginx/auth.conf;
+    subs_filter_types text/html text/css application/javascript application/json;
+    subs_filter 'src="/' 'src="/jackett/';
+    subs_filter 'href="/' 'href="/jackett/';
+    subs_filter '/admin/' '/jackett/admin/';
+    subs_filter 'url = a.href;' '';
+    subs_filter 'return url' 'return "http://"+window.location.hostname+":9117/"+url';
   }
   # ajenti
   location /ajenti {
