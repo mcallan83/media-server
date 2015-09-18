@@ -39,7 +39,7 @@ sudo apt-get install bzip2 -y
 sudo apt-get install curl -y
 sudo apt-get install git-core -y
 sudo apt-get install libcurl4-openssl-dev -y
-sudo apt-get install nginx -y
+sudo apt-get install nginx-extra -y
 sudo apt-get install python -y
 sudo apt-get install python-software-properties -y
 sudo apt-get install upstart -y
@@ -70,52 +70,52 @@ sudo service avahi-daemon restart
 # Couch Potato
 ################################################################################
 
-cd /opt
-sudo git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
-cd $SCRIPTPATH
-
-sudo chown -R $UNAME: /opt/couchpotato
-sudo chmod -R 755 /opt/couchpotato
-
-sudo tee "/etc/init/couchpotato.conf" > /dev/null <<EOF
-description "Upstart Script: CouchPotato"
-start on runlevel [2345]
-stop on runlevel [016]
-setuid $UNAME
-setgid $UGROUP
-exec python /opt/couchpotato/CouchPotato.py
-EOF
-sudo chmod +x /etc/init/couchpotato.conf
-
-sudo service couchpotato start
+# cd /opt
+# sudo git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
+# cd $SCRIPTPATH
+#
+# sudo chown -R $UNAME: /opt/couchpotato
+# sudo chmod -R 755 /opt/couchpotato
+#
+# sudo tee "/etc/init/couchpotato.conf" > /dev/null <<EOF
+# description "Upstart Script: CouchPotato"
+# start on runlevel [2345]
+# stop on runlevel [016]
+# setuid $UNAME
+# setgid $UGROUP
+# exec python /opt/couchpotato/CouchPotato.py
+# EOF
+# sudo chmod +x /etc/init/couchpotato.conf
+#
+# sudo service couchpotato start
 
 
 ################################################################################
 # Deluge
 ################################################################################
 
-sudo add-apt-repository -y ppa:deluge-team/ppa
-sudo apt-get update -y
-sudo apt-get install deluged deluge-webui -y
-
-sudo tee "/etc/init/deluge.conf" > /dev/null <<EOF
-description "Upstart Script: Deluge"
-start on runlevel [2345]
-stop on runlevel [016]
-exec start-stop-daemon -S -c $UNAME:$UGROUP -k 022 -x /usr/bin/deluged -- -d
-EOF
-sudo chmod +x /etc/init/deluge.conf
-
-sudo tee "/etc/init/deluge-web.conf" > /dev/null <<EOF
-description "Upstart Script: Deluge Web"
-start on started deluge
-stop on stopping deluge
-exec start-stop-daemon -S -c $UNAME:$UGROUP -k 027 -x /usr/bin/deluge-web
-EOF
-sudo chmod +x /etc/init/deluge-web.conf
-
-sudo service deluge start
-sudo service deluge-web start
+# sudo add-apt-repository -y ppa:deluge-team/ppa
+# sudo apt-get update -y
+# sudo apt-get install deluged deluge-webui -y
+#
+# sudo tee "/etc/init/deluge.conf" > /dev/null <<EOF
+# description "Upstart Script: Deluge"
+# start on runlevel [2345]
+# stop on runlevel [016]
+# exec start-stop-daemon -S -c $UNAME:$UGROUP -k 022 -x /usr/bin/deluged -- -d
+# EOF
+# sudo chmod +x /etc/init/deluge.conf
+#
+# sudo tee "/etc/init/deluge-web.conf" > /dev/null <<EOF
+# description "Upstart Script: Deluge Web"
+# start on started deluge
+# stop on stopping deluge
+# exec start-stop-daemon -S -c $UNAME:$UGROUP -k 027 -x /usr/bin/deluge-web
+# EOF
+# sudo chmod +x /etc/init/deluge-web.conf
+#
+# sudo service deluge start
+# sudo service deluge-web start
 
 ################################################################################
 # Jackett
@@ -144,41 +144,41 @@ sudo service jackett start
 # Plex
 ################################################################################
 
-sudo curl http://shell.ninthgate.se/packages/shell-ninthgate-se-keyring.key | sudo apt-key add -
-echo "deb http://www.deb-multimedia.org wheezy main non-free" | sudo tee -a /etc/apt/sources.list.d/deb-multimedia.list
-echo "deb http://shell.ninthgate.se/packages/debian wheezy main" | sudo tee -a /etc/apt/sources.list.d/plex.list
-sudo apt-get update -y
-sudo apt-get install deb-multimedia-keyring -y --force-yes
-sudo apt-get update -y
-sudo apt-get install plexmediaserver -y
-
-sudo sed -i 's/PLEX_MEDIA_SERVER_USER=plex/PLEX_MEDIA_SERVER_USER='$UNAME'/g' /etc/default/plexmediaserver
-
-sudo service plexmediaserver restart
+# sudo curl http://shell.ninthgate.se/packages/shell-ninthgate-se-keyring.key | sudo apt-key add -
+# echo "deb http://www.deb-multimedia.org wheezy main non-free" | sudo tee -a /etc/apt/sources.list.d/deb-multimedia.list
+# echo "deb http://shell.ninthgate.se/packages/debian wheezy main" | sudo tee -a /etc/apt/sources.list.d/plex.list
+# sudo apt-get update -y
+# sudo apt-get install deb-multimedia-keyring -y --force-yes
+# sudo apt-get update -y
+# sudo apt-get install plexmediaserver -y
+#
+# sudo sed -i 's/PLEX_MEDIA_SERVER_USER=plex/PLEX_MEDIA_SERVER_USER='$UNAME'/g' /etc/default/plexmediaserver
+#
+# sudo service plexmediaserver restart
 
 
 ################################################################################
 # Sonarr
 ################################################################################
 
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC
-echo "deb https://apt.sonarr.tv/ master main" | sudo tee -a /etc/apt/sources.list
-sudo apt-get update
-sudo apt-get install nzbdrone -y
-
-sudo tee "/etc/init/sonarr.conf" > /dev/null <<EOF
-description "Upstart Script: Sonarr"
-start on runlevel [2345]
-stop on runlevel [016]
-setuid $UNAME
-setgid $UGROUP
-exec mono /opt/NzbDrone/NzbDrone.exe
-EOF
-sudo chmod +x /etc/init/sonarr.conf
-
-#sudo sed -i 's/<Port>8989<\/Port>/<Port>8989<\/Port>\n  <UrlBase>sonarr<\/UrlBase>/g' /home/$UNAME/.config/NzbDrone/config.xml
-
-sudo service sonarr start
+# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FDA5DFFC
+# echo "deb https://apt.sonarr.tv/ master main" | sudo tee -a /etc/apt/sources.list
+# sudo apt-get update
+# sudo apt-get install nzbdrone -y
+#
+# sudo tee "/etc/init/sonarr.conf" > /dev/null <<EOF
+# description "Upstart Script: Sonarr"
+# start on runlevel [2345]
+# stop on runlevel [016]
+# setuid $UNAME
+# setgid $UGROUP
+# exec mono /opt/NzbDrone/NzbDrone.exe
+# EOF
+# sudo chmod +x /etc/init/sonarr.conf
+#
+# #sudo sed -i 's/<Port>8989<\/Port>/<Port>8989<\/Port>\n  <UrlBase>sonarr<\/UrlBase>/g' /home/$UNAME/.config/NzbDrone/config.xml
+#
+# sudo service sonarr start
 
 
 ################################################################################
