@@ -235,6 +235,7 @@ server {
   listen   80;
   server_name    _;
   access_log  /var/log/nginx/access.log;
+  error_log  /var/log/nginx/error.log;
   # jackett
   location /jackett {
     rewrite (/jackett)$ / break;
