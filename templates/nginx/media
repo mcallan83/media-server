@@ -3,6 +3,16 @@ server {
   server_name    _;
   access_log  /var/log/nginx/access.log;
 
+  # jackett
+  location /jackett {
+    rewrite (/jackett)$ / break;
+    rewrite /jackett/(.*) /$1 break;
+    proxy_pass http://localhost:9177;
+    proxy_redirect /        /jackett/;
+    include /etc/nginx/proxy.conf;
+    include /etc/nginx/auth.conf;
+  }
+
   # ajenti
   location /ajenti {
     rewrite (/ajenti)$ / break;
