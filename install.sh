@@ -39,7 +39,8 @@ sudo apt-get install bzip2 -y
 sudo apt-get install curl -y
 sudo apt-get install git-core -y
 sudo apt-get install libcurl4-openssl-dev -y
-sudo apt-get install nginx-extras -y
+sudo apt-get install nginx -y
+#sudo apt-get install nginx-extras -y
 sudo apt-get install python -y
 sudo apt-get install python-software-properties -y
 sudo apt-get install upstart -y
