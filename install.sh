@@ -190,7 +190,7 @@ sudo service sonarr start
 
 sudo update-rc.d nginx defaults
 
-sudo tee "/etc/nginx/proxy.conf" > /dev/null <<EOF
+sudo tee "/etc/nginx/proxy.conf" > /dev/null <<"EOF"
 proxy_connect_timeout   59s;
 proxy_send_timeout      600;
 proxy_read_timeout      36000s;

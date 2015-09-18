@@ -14,7 +14,7 @@ This script has been tested with Ubuntu Server. Installed applications are avail
 
 ## Installation & Config
 
-TBD
+Run `source <(curl -s https://raw.githubusercontent.com/mcallan83/media-server/master/install.sh)` on a fresh Ubuntu 14.04 Server install.
 
 ## Web Access Ports
 
