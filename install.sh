@@ -190,13 +190,95 @@ sudo service sonarr start
 
 sudo update-rc.d nginx defaults
 
-sudo cp $SCRIPTPATH/templates/nginx/proxy.conf /etc/nginx/proxy.conf
-sudo cp $SCRIPTPATH/templates/nginx/auth.conf /etc/nginx/auth.conf
+sudo tee "/etc/nginx/proxy.conf" > /dev/null <<EOF
+proxy_connect_timeout   59s;
+proxy_send_timeout      600;
+proxy_read_timeout      36000s;
+proxy_buffer_size       64k;
+proxy_buffers           16 32k;
+proxy_pass_header       Set-Cookie;
+proxy_hide_header       Vary;
+proxy_busy_buffers_size         64k;
+proxy_temp_file_write_size      64k;
+proxy_set_header        Accept-Encoding         '';
+proxy_ignore_headers    Cache-Control           Expires;
+proxy_set_header        Referer                 $http_referer;
+proxy_set_header        Host                    $host;
+proxy_set_header        Cookie                  $http_cookie;
+proxy_set_header        X-Real-IP               $remote_addr;
+proxy_set_header        X-Forwarded-Host        $host;
+proxy_set_header        X-Forwarded-Server      $host;
+proxy_set_header        X-Forwarded-For         $proxy_add_x_forwarded_for;
+proxy_set_header        X-Forwarded-Port        '443';
+proxy_set_header        X-Forwarded-Ssl         on;
+proxy_set_header        X-Forwarded-Proto       https;
+proxy_set_header        Authorization           '';
+proxy_buffering         off;
+proxy_redirect          off;
+proxy_http_version      1.1;
+proxy_set_header        Upgrade         $http_upgrade;
+proxy_set_header        Connection      "upgrade"; 
+EOF
+
+sudo tee "/etc/nginx/auth.conf" > /dev/null <<EOF
+satisfy any;
+allow 127.0.0.1;
+auth_basic "Restricted";
+auth_basic_user_file /etc/nginx/htpasswd;
+EOF
 
 sudo rm /etc/nginx/sites-enabled/default
 sudo rm /etc/nginx/sites-available/default
 
-sudo cp $SCRIPTPATH/templates/nginx/media /etc/nginx/sites-available/media
+sudo tee "/etc/nginx/sites-available/media" > /dev/null <<EOF
+server {
+  listen   80;
+  server_name    _;
+  access_log  /var/log/nginx/access.log;
+  # jackett
+  location /jackett {
+    rewrite (/jackett)$ / break;
+    rewrite /jackett/(.*) /$1 break;
+    proxy_pass http://localhost:9177;
+    proxy_redirect /        /jackett/;
+    include /etc/nginx/proxy.conf;
+    include /etc/nginx/auth.conf;
+  }
+  # ajenti
+  location /ajenti {
+    rewrite (/ajenti)$ / break;
+    rewrite /ajenti/(.*) /$1 break;
+    proxy_pass http://localhost:8000;
+    proxy_redirect /        /ajenti/;
+    include /etc/nginx/proxy.conf;
+    include /etc/nginx/auth.conf;
+  }
+  # plex
+  location / {
+    proxy_pass http://127.0.0.1:32400;
+    if ($http_x_plex_device_name = '') {
+      rewrite ^/$ http://$http_host/web/index.html;
+    }
+    include /etc/nginx/proxy.conf;
+    include /etc/nginx/auth.conf;
+  }
+  # deluge
+  location /deluge {
+    proxy_pass  http://127.0.0.1:8112/;
+    proxy_set_header  X-Deluge-Base "/deluge/";
+    proxy_cookie_path / /deluge;
+    include /etc/nginx/proxy.conf;
+    include /etc/nginx/auth.conf;
+  }
+  # sonarr
+  location /sonarr {
+      proxy_pass http://localhost:8989;
+      include /etc/nginx/proxy.conf;
+      include /etc/nginx/auth.conf;
+  }
+}
+EOF
+
 cd /etc/nginx/sites-enabled
 sudo ln -s /etc/nginx/sites-available/media media
 cd $SCRIPTPATH
