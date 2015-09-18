@@ -39,8 +39,7 @@ sudo apt-get install bzip2 -y
 sudo apt-get install curl -y
 sudo apt-get install git-core -y
 sudo apt-get install libcurl4-openssl-dev -y
-sudo apt-get install nginx -y
-#sudo apt-get install nginx-extras -y
+sudo apt-get install nginx-extras -y
 sudo apt-get install python -y
 sudo apt-get install python-software-properties -y
 sudo apt-get install upstart -y
@@ -237,24 +236,6 @@ server {
   server_name    _;
   access_log  /var/log/nginx/access.log;
   error_log  /var/log/nginx/error.log;
-  # jackett
-  location /jackett {
-    rewrite (/jackett)$ / break;
-    rewrite /jackett/(.*) /$1 break;
-    proxy_pass http://localhost:9177;
-    proxy_redirect /        /jackett/;
-    include /etc/nginx/proxy.conf;
-    include /etc/nginx/auth.conf;
-  }
-  # ajenti
-  location /ajenti {
-    rewrite (/ajenti)$ / break;
-    rewrite /ajenti/(.*) /$1 break;
-    proxy_pass http://localhost:8000;
-    proxy_redirect /        /ajenti/;
-    include /etc/nginx/proxy.conf;
-    include /etc/nginx/auth.conf;
-  }
   # plex
   location / {
     proxy_pass http://127.0.0.1:32400;
@@ -277,6 +258,24 @@ server {
       proxy_pass http://localhost:8989;
       include /etc/nginx/proxy.conf;
       include /etc/nginx/auth.conf;
+  }
+  # jackett
+  location /jackett {
+    rewrite (/jackett)$ / break;
+    rewrite /jackett/(.*) /$1 break;
+    proxy_pass http://localhost:9177;
+    proxy_redirect /        /jackett/;
+    include /etc/nginx/proxy.conf;
+    include /etc/nginx/auth.conf;
+  }
+  # ajenti
+  location /ajenti {
+    rewrite (/ajenti)$ / break;
+    rewrite /ajenti/(.*) /$1 break;
+    proxy_pass http://localhost:8000;
+    proxy_redirect /        /ajenti/;
+    include /etc/nginx/proxy.conf;
+    include /etc/nginx/auth.conf;
   }
 }
 EOF
