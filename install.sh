@@ -14,26 +14,19 @@ sudo apt-get update && sudo apt-get upgrade -y
 # Base Directories
 ################################################################################
 
-BASEDIR = /home/$UNAME/Media
+DIR = /home/$UNAME/Media
 
-sudo mkdir $BASEDIR
-sudo mkdir $BASEDIR/Movies
-sudo mkdir $BASEDIR/TVShows
-sudo mkdir $BASEDIR/Downloads
-sudo mkdir $BASEDIR/Downloads/Complete
-sudo mkdir $BASEDIR/Downloads/Incomplete
-sudo mkdir $BASEDIR/Downloads/Complete/Movies
-sudo mkdir $BASEDIR/Downloads/Complete/TV
+sudo mkdir -p $DIR
+sudo mkdir -p $DIR/Movies
+sudo mkdir -p $DIR/TVShows
+sudo mkdir -p $DIR/Downloads
+sudo mkdir -p $DIR/Downloads/Complete
+sudo mkdir -p $DIR/Downloads/Incomplete
+sudo mkdir -p $DIR/Downloads/Complete/Movies
+sudo mkdir -p $DIR/Downloads/Complete/TV
 
-sudo chown -R $UNAME:$UGROUP $BASEDIR
-sudo chown -R $UNAME:$UGROUP $BASEDIR/Movies
-sudo chown -R $UNAME:$UGROUP $BASEDIR/TVShows
-sudo chown -R $UNAME:$UGROUP $BASEDIR/Downloads
-
-sudo chmod -R 775 $BASEDIR
-sudo chmod -R 775 $BASEDIR/Movies
-sudo chmod -R 775 $BASEDIR/TVShows
-sudo chmod -R 775 $BASEDIR/Downloads
+sudo chown -R $UNAME:$UGROUP $DIR
+sudo chmod -R 775 $DIR
 
 ################################################################################
 # Base Packages
@@ -48,6 +41,7 @@ sudo apt-get install git-core -y
 sudo apt-get install libcurl4-openssl-dev -y
 sudo apt-get install nginx -y
 sudo apt-get install python -y
+sudo apt-get install python-software-properties -y
 sudo apt-get install upstart -y
 
 
@@ -59,6 +53,8 @@ wget http://repo.ajenti.org/debian/key -O- | sudo apt-key add -
 echo "deb http://repo.ajenti.org/ng/debian main main ubuntu" | sudo tee -a /etc/apt/sources.list
 sudo apt-get update -y
 sudo apt-get install ajenti -y
+
+sudo sed -i 's/"enable": true/"enable": false/g' /etc/ajenti/config.json
 
 sudo service ajenti restart
 
@@ -76,6 +72,7 @@ sudo service avahi-daemon restart
 
 cd /opt
 sudo git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
+cd $SCRIPTPATH
 
 sudo chown -R $UNAME: /opt/couchpotato
 sudo chmod -R 755 /opt/couchpotato
