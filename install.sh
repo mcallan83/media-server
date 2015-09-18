@@ -220,7 +220,7 @@ proxy_set_header        Upgrade         $http_upgrade;
 proxy_set_header        Connection      "upgrade"; 
 EOF
 
-sudo tee "/etc/nginx/auth.conf" > /dev/null <<EOF
+sudo tee "/etc/nginx/auth.conf" > /dev/null <<"EOF"
 satisfy any;
 allow 127.0.0.1;
 auth_basic "Restricted";
@@ -230,7 +230,7 @@ EOF
 sudo rm /etc/nginx/sites-enabled/default
 sudo rm /etc/nginx/sites-available/default
 
-sudo tee "/etc/nginx/sites-available/media" > /dev/null <<EOF
+sudo tee "/etc/nginx/sites-available/media" > /dev/null <<"EOF"
 server {
   listen   80;
   server_name    _;
@@ -284,6 +284,6 @@ cd /etc/nginx/sites-enabled
 sudo ln -s /etc/nginx/sites-available/media media
 cd $SCRIPTPATH
 
-sudo htpasswd -b -c /etc/nginx/htpasswd media $UPASS
+sudo htpasswd -b -c /etc/nginx/htpasswd $UNAME $UPASS
 
 sudo service nginx restart
