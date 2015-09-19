@@ -14,19 +14,19 @@ sudo apt-get update && sudo apt-get upgrade -y
 # Base Directories
 ################################################################################
 
-DIR = /home/$UNAME/Media
+# DIR = /home/$UNAME/Media
 
-sudo mkdir -p $DIR
-sudo mkdir -p $DIR/Movies
-sudo mkdir -p $DIR/TVShows
-sudo mkdir -p $DIR/Downloads
-sudo mkdir -p $DIR/Downloads/Complete
-sudo mkdir -p $DIR/Downloads/Incomplete
-sudo mkdir -p $DIR/Downloads/Complete/Movies
-sudo mkdir -p $DIR/Downloads/Complete/TV
+# sudo mkdir -p $DIR
+# sudo mkdir -p $DIR/Movies
+# sudo mkdir -p $DIR/TVShows
+# sudo mkdir -p $DIR/Downloads
+# sudo mkdir -p $DIR/Downloads/Complete
+# sudo mkdir -p $DIR/Downloads/Incomplete
+# sudo mkdir -p $DIR/Downloads/Complete/Movies
+# sudo mkdir -p $DIR/Downloads/Complete/TV
 
-sudo chown -R $UNAME:$UGROUP $DIR
-sudo chmod -R 775 $DIR
+# sudo chown -R $UNAME:$UGROUP $DIR
+# sudo chmod -R 775 $DIR
 
 ################################################################################
 # Base Packages
@@ -283,7 +283,7 @@ server {
     subs_filter_types text/css application/javascript application/json;
     subs_filter 'src="/' 'src="/jackett/';
     subs_filter 'href="/' 'href="/jackett/';
-    subs_filter 'action="/' 'action="/jackett/'
+    subs_filter 'action="/' 'action="/jackett/';
     subs_filter '/admin/' '/jackett/admin/';
     subs_filter 'url = a.href;' '';
     subs_filter 'return url' 'return "http://"+window.location.hostname+":9117"+url';
