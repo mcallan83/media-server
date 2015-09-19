@@ -7,10 +7,11 @@ This script has been tested with Ubuntu Server. Installed applications are avail
 ## Included Software
 
 - [CouchPotato](https://couchpota.to/) Download movies automatically, easily and in the best quality as soon as they are available.
-- [Deluge](http://deluge-torrent.org/) A lightweight, cross-platform BitTorrent client.
+- [Deluge](http://deluge-torrent.org/) A lightweight BitTorrent client.
 - [Jackett](https://github.com/zone117x/Jackett) A Torznab\TorrentPotato API server that enables Sonarr and CouchPotato to access data from additional indexers, in a similar fashion to RSS, but with added features such as searching.
 - [Plex](https://plex.tv/) Organizes your video, music, and photo collections and streams them to all of your screens.
 - [Sonarr](https://sonarr.tv/) Smart PVR for newsgroup and BitTorrent users.
+- [Wetty](https://github.com/krishnasrinivas/wetty) Web-based terminal client.
 
 ## Installation & Config
 
@@ -23,6 +24,7 @@ Run `source <(curl -s https://raw.githubusercontent.com/mcallan83/media-server/m
 - Jackett: 9117
 - Plex: 32400
 - Sonarr: 8989
+- Wetty: 3000
 
 ## Reference Sites
 
