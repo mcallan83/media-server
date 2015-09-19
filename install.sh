@@ -44,7 +44,7 @@ sudo apt-get install nginx-extras -y
 sudo apt-get install python -y
 sudo apt-get install python-software-properties -y
 sudo apt-get install upstart -y
-
+sudo apt-get install xmlstarlet -y
 
 ################################################################################
 # Ajenti
@@ -180,7 +180,7 @@ exec mono /opt/NzbDrone/NzbDrone.exe
 EOF
 sudo chmod +x /etc/init/sonarr.conf
 
-# sudo sed -i 's/<\/Config>/  <UrlBase>sonarr123<\/UrlBase>\n<\/Config>/g' /home/media/.config/NzbDrone/config.xml
+xmlstarlet ed -L -u "//UrlBase" -v "sonarr" /home/$UNAME/.config/NzbDrone/config.xml
 
 sudo service sonarr start
 
