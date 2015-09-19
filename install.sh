@@ -180,7 +180,7 @@ exec mono /opt/NzbDrone/NzbDrone.exe
 EOF
 sudo chmod +x /etc/init/sonarr.conf
 
-#sudo sed -i 's/<Port>8989<\/Port>/<Port>8989<\/Port>\n  <UrlBase>sonarr<\/UrlBase>/g' /home/$UNAME/.config/NzbDrone/config.xml
+sudo sed -i 's/<\/Config>/  <UrlBase>sonarr123<\/UrlBase>\n<\/Config>/g' /home/media/.config/NzbDrone/config.xml
 
 sudo service sonarr start
 
