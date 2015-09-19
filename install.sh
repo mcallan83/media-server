@@ -35,6 +35,7 @@ sudo chmod -R 775 $DIR
 sudo apt-get install apache2-utils -y
 sudo apt-get install apt-transport-https -y
 sudo apt-get install avahi-daemon -y
+sudo apt-get install build-essential -y
 sudo apt-get install bzip2 -y
 sudo apt-get install curl -y
 sudo apt-get install git-core -y
@@ -297,3 +298,23 @@ cd $SCRIPTPATH
 sudo htpasswd -b -c /etc/nginx/htpasswd $UNAME $UPASS
 
 sudo service nginx restart
+
+
+################################################################################
+# Wetty
+################################################################################
+
+curl -sL https://deb.nodesource.com/setup | sudo bash -
+sudo apt-get install nodejs -y
+sudo npm install wetty -g
+
+sudo tee "/etc/init/wetty.conf" > /dev/null <<EOF
+description "Upstart Script: Wetty"
+start on started mountall
+stop on shutdown
+respawn
+respawn limit 20 5
+exec sudo -u root wetty -p 3000
+EOF
+
+sudo service wetty start
