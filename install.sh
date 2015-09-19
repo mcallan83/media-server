@@ -50,14 +50,14 @@ sudo apt-get install xmlstarlet -y
 # Ajenti
 ################################################################################
 
-wget http://repo.ajenti.org/debian/key -O- | sudo apt-key add -
-echo "deb http://repo.ajenti.org/ng/debian main main ubuntu" | sudo tee -a /etc/apt/sources.list
-sudo apt-get update -y
-sudo apt-get install ajenti -y
+# wget http://repo.ajenti.org/debian/key -O- | sudo apt-key add -
+# echo "deb http://repo.ajenti.org/ng/debian main main ubuntu" | sudo tee -a /etc/apt/sources.list
+# sudo apt-get update -y
+# sudo apt-get install ajenti -y
 
-sudo sed -i 's/"enable": true/"enable": false/g' /etc/ajenti/config.json
+# sudo sed -i 's/"enable": true/"enable": false/g' /etc/ajenti/config.json
 
-sudo service ajenti restart
+# sudo service ajenti restart
 
 
 ################################################################################
@@ -95,53 +95,53 @@ sudo service avahi-daemon restart
 # Deluge
 ################################################################################
 
-sudo add-apt-repository -y ppa:deluge-team/ppa
-sudo apt-get update -y
-sudo apt-get install deluged deluge-webui -y
+# sudo add-apt-repository -y ppa:deluge-team/ppa
+# sudo apt-get update -y
+# sudo apt-get install deluged deluge-webui -y
 
-sudo tee "/etc/init/deluge.conf" > /dev/null <<EOF
-description "Upstart Script: Deluge"
-start on runlevel [2345]
-stop on runlevel [016]
-exec start-stop-daemon -S -c $UNAME:$UGROUP -k 022 -x /usr/bin/deluged -- -d
-EOF
-sudo chmod +x /etc/init/deluge.conf
+# sudo tee "/etc/init/deluge.conf" > /dev/null <<EOF
+# description "Upstart Script: Deluge"
+# start on runlevel [2345]
+# stop on runlevel [016]
+# exec start-stop-daemon -S -c $UNAME:$UGROUP -k 022 -x /usr/bin/deluged -- -d
+# EOF
+# sudo chmod +x /etc/init/deluge.conf
 
-sudo tee "/etc/init/deluge-web.conf" > /dev/null <<EOF
-description "Upstart Script: Deluge Web"
-start on started deluge
-stop on stopping deluge
-exec start-stop-daemon -S -c $UNAME:$UGROUP -k 027 -x /usr/bin/deluge-web
-EOF
-sudo chmod +x /etc/init/deluge-web.conf
+# sudo tee "/etc/init/deluge-web.conf" > /dev/null <<EOF
+# description "Upstart Script: Deluge Web"
+# start on started deluge
+# stop on stopping deluge
+# exec start-stop-daemon -S -c $UNAME:$UGROUP -k 027 -x /usr/bin/deluge-web
+# EOF
+# sudo chmod +x /etc/init/deluge-web.conf
 
-sudo service deluge start
-sudo service deluge-web start
+# sudo service deluge start
+# sudo service deluge-web start
 
 ################################################################################
 # Jackett
 ################################################################################
 
-sudo wget http://jackett.net/Download/v0.6.4/Jackett.Mono.v0.6.4.tar.bz2
-sudo tar -xvf Jackett.Mono.v0.6.4.tar.bz2
-sudo mkdir /opt/jackett
-sudo mv Jackett/* /opt/jackett
-sudo chown -R $UNAME: /opt/jackett
+# sudo wget http://jackett.net/Download/v0.6.4/Jackett.Mono.v0.6.4.tar.bz2
+# sudo tar -xvf Jackett.Mono.v0.6.4.tar.bz2
+# sudo mkdir /opt/jackett
+# sudo mv Jackett/* /opt/jackett
+# sudo chown -R $UNAME: /opt/jackett
 
-sudo rm Jackett.Mono.v0.6.4.tar.bz2
-sudo rm -rf Jackett
+# sudo rm Jackett.Mono.v0.6.4.tar.bz2
+# sudo rm -rf Jackett
 
-sudo tee "/etc/init/jackett.conf" > /dev/null <<EOF
-description "Upstart Script: Jackett"
-start on runlevel [2345]
-stop on runlevel [016]
-setuid $UNAME
-setgid $UGROUP
-exec mono /opt/jackett/JackettConsole.exe
-EOF
-sudo chmod +x /etc/init/jackett.conf
+# sudo tee "/etc/init/jackett.conf" > /dev/null <<EOF
+# description "Upstart Script: Jackett"
+# start on runlevel [2345]
+# stop on runlevel [016]
+# setuid $UNAME
+# setgid $UGROUP
+# exec mono /opt/jackett/JackettConsole.exe
+# EOF
+# sudo chmod +x /etc/init/jackett.conf
 
-sudo service jackett start
+# sudo service jackett start
 
 
 ################################################################################
