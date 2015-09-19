@@ -71,24 +71,24 @@ sudo service avahi-daemon restart
 # Couch Potato
 ################################################################################
 
-cd /opt
-sudo git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
-cd $SCRIPTPATH
+# cd /opt
+# sudo git clone https://github.com/RuudBurger/CouchPotatoServer.git couchpotato
+# cd $SCRIPTPATH
 
-sudo chown -R $UNAME: /opt/couchpotato
-sudo chmod -R 755 /opt/couchpotato
+# sudo chown -R $UNAME: /opt/couchpotato
+# sudo chmod -R 755 /opt/couchpotato
 
-sudo tee "/etc/init/couchpotato.conf" > /dev/null <<EOF
-description "Upstart Script: CouchPotato"
-start on runlevel [2345]
-stop on runlevel [016]
-setuid $UNAME
-setgid $UGROUP
-exec python /opt/couchpotato/CouchPotato.py
-EOF
-sudo chmod +x /etc/init/couchpotato.conf
+# sudo tee "/etc/init/couchpotato.conf" > /dev/null <<EOF
+# description "Upstart Script: CouchPotato"
+# start on runlevel [2345]
+# stop on runlevel [016]
+# setuid $UNAME
+# setgid $UGROUP
+# exec python /opt/couchpotato/CouchPotato.py
+# EOF
+# sudo chmod +x /etc/init/couchpotato.conf
 
-sudo service couchpotato start
+# sudo service couchpotato start
 
 
 ################################################################################
@@ -316,17 +316,17 @@ sudo service nginx restart
 # Wetty
 ################################################################################
 
-curl -sL https://deb.nodesource.com/setup | sudo bash -
-sudo apt-get install nodejs -y
-sudo npm install wetty -g
+# curl -sL https://deb.nodesource.com/setup | sudo bash -
+# sudo apt-get install nodejs -y
+# sudo npm install wetty -g
 
-sudo tee "/etc/init/wetty.conf" > /dev/null <<EOF
-description "Upstart Script: Wetty"
-start on started mountall
-stop on shutdown
-respawn
-respawn limit 20 5
-exec sudo -u root wetty -p 3000
-EOF
+# sudo tee "/etc/init/wetty.conf" > /dev/null <<EOF
+# description "Upstart Script: Wetty"
+# start on started mountall
+# stop on shutdown
+# respawn
+# respawn limit 20 5
+# exec sudo -u root wetty -p 3000
+# EOF
 
-sudo service wetty start
+# sudo service wetty start
