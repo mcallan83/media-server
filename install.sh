@@ -147,17 +147,17 @@ sudo service jackett start
 # Plex
 ################################################################################
 
-# sudo curl http://shell.ninthgate.se/packages/shell-ninthgate-se-keyring.key | sudo apt-key add -
-# echo "deb http://www.deb-multimedia.org wheezy main non-free" | sudo tee -a /etc/apt/sources.list.d/deb-multimedia.list
-# echo "deb http://shell.ninthgate.se/packages/debian wheezy main" | sudo tee -a /etc/apt/sources.list.d/plex.list
-# sudo apt-get update -y
-# sudo apt-get install deb-multimedia-keyring -y --force-yes
-# sudo apt-get update -y
-# sudo apt-get install plexmediaserver -y
-#
-# sudo sed -i 's/PLEX_MEDIA_SERVER_USER=plex/PLEX_MEDIA_SERVER_USER='$UNAME'/g' /etc/default/plexmediaserver
-#
-# sudo service plexmediaserver restart
+sudo curl http://shell.ninthgate.se/packages/shell-ninthgate-se-keyring.key | sudo apt-key add -
+echo "deb http://www.deb-multimedia.org wheezy main non-free" | sudo tee -a /etc/apt/sources.list.d/deb-multimedia.list
+echo "deb http://shell.ninthgate.se/packages/debian wheezy main" | sudo tee -a /etc/apt/sources.list.d/plex.list
+sudo apt-get update -y
+sudo apt-get install deb-multimedia-keyring -y --force-yes
+sudo apt-get update -y
+sudo apt-get install plexmediaserver -y
+
+sudo sed -i 's/PLEX_MEDIA_SERVER_USER=plex/PLEX_MEDIA_SERVER_USER='$UNAME'/g' /etc/default/plexmediaserver
+
+sudo service plexmediaserver restart
 
 
 ################################################################################
@@ -259,29 +259,33 @@ server {
       include /etc/nginx/proxy.conf;
       include /etc/nginx/auth.conf;
   }
+  # ajenti
+  location ~ /ajenti.* {
+     proxy_pass http://127.0.0.1:8000;
+     rewrite (/ajenti)$ / break;
+     rewrite /ajenti/(.*) /$1 break;
+     proxy_redirect / /ajenti/;
+     proxy_set_header Host $host;
+     proxy_set_header Origin http://$host;
+     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     proxy_http_version 1.1;
+     proxy_set_header Upgrade $http_upgrade;
+     proxy_set_header Connection $http_connection;
+  }
   # jackett
-  location /jackett {
+  location ~ /jackett.* {
     proxy_pass http://localhost:9117;
     include /etc/nginx/proxy.conf;
-    proxy_redirect /        /jackett/;
-    rewrite /jackett$ / break;
-    rewrite /jackett/(.*) /$1 break;
+    rewrite ^/jackett$ $scheme://$http_host/jackett/Admin/Dashboard break;
+    rewrite ^/jackett/(.*) /$1 break;
     include /etc/nginx/auth.conf;
-    subs_filter_types text/html text/css application/javascript application/json;
+    subs_filter_types text/css application/javascript application/json;
     subs_filter 'src="/' 'src="/jackett/';
     subs_filter 'href="/' 'href="/jackett/';
+    subs_filter 'action="/' 'action="/jackett/'
     subs_filter '/admin/' '/jackett/admin/';
     subs_filter 'url = a.href;' '';
-    subs_filter 'return url' 'return "http://"+window.location.hostname+":9117/"+url';
-  }
-  # ajenti
-  location /ajenti {
-    rewrite (/ajenti)$ / break;
-    rewrite /ajenti/(.*) /$1 break;
-    proxy_pass http://localhost:8000;
-    proxy_redirect /        /ajenti/;
-    include /etc/nginx/proxy.conf;
-    include /etc/nginx/auth.conf;
+    subs_filter 'return url' 'return "http://"+window.location.hostname+":9117"+url';
   }
 }
 EOF
