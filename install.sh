@@ -181,9 +181,18 @@ EOF
 sudo chmod +x /etc/init/sonarr.conf
 
 sudo service sonarr start
+sudo service sonarr stop
+
+echo "NOW"
+echo "NOW"
+echo "NOW"
+echo "NOW"
+echo "NOW"
+echo "NOW"
+
 # curl 127.0.0.1:8989
 
-sudo service sonarr stop
+
 
 # while [ ! -f /home/$UNAME/.config/NzbDrone/config.xml ]
 # do
