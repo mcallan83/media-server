@@ -180,13 +180,15 @@ exec mono /opt/NzbDrone/NzbDrone.exe
 EOF
 sudo chmod +x /etc/init/sonarr.conf
 
+sudo service sonarr start
+
 while [ ! -f /home/$UNAME/.config/NzbDrone/config.xml ]
 do
-  sleep 2
-  sudo service sonarr start
-  sudo service sonarr stop
+  sleep 10
+  sudo service sonarr restart
 done
 
+sudo service sonarr stop
 sudo xmlstarlet ed -L -u "//UrlBase" -v "sonarr" /home/$UNAME/.config/NzbDrone/config.xml
 sudo service sonarr start
 
