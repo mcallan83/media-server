@@ -19,6 +19,7 @@ Run `source <(curl -s https://raw.githubusercontent.com/mcallan83/media-server/m
 
 ## Web Access Ports
 
+- Ajenti: 8000
 - Couchpotato: 5050
 - Deluge: 8112
 - Jackett: 9117
