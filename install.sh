@@ -91,6 +91,17 @@ sudo chmod +x /etc/init/couchpotato.conf
 sudo service couchpotato start
 
 
+while [ ! -f /home/$UNAME/.couchpotato/settings.conf ]
+do
+  sleep 5
+  sudo service couchpotato restart
+done
+
+sudo service couchpotato stop
+sudo sed -i 's/url_base =/url_base = couchpotato/g' /home/$UNAME/.couchpotato/settings.conf
+sudo service couchpotato start
+
+
 ################################################################################
 # Deluge
 ################################################################################
@@ -185,7 +196,7 @@ sudo service sonarr start
 
 while [ ! -f /home/$UNAME/.config/NzbDrone/config.xml ]
 do
-  sleep 10
+  sleep 5
   sudo service sonarr restart
 done
 
@@ -308,6 +319,11 @@ server {
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       proxy_set_header Host $http_host;
       proxy_set_header X-NginX-Proxy true;
+  }
+  location /couchpotato {
+      proxy_pass http://127.0.0.1:5050;
+      include /etc/nginx/proxy.conf;
+      include /etc/nginx/auth.conf;
   }
 }
 EOF
