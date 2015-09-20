@@ -180,23 +180,15 @@ exec mono /opt/NzbDrone/NzbDrone.exe
 EOF
 sudo chmod +x /etc/init/sonarr.conf
 
-sudo service sonarr start
-
-echo "NOW"
-echo "NOW"
-echo "NOW"
-echo "NOW"
-echo "NOW"
-echo "NOW"
-
 while [ ! -f /home/$UNAME/.config/NzbDrone/config.xml ]
 do
   sleep 2
-  echo "test"
-  sudo service sonarr restart
+  sudo service sonarr start
+  sudo service sonarr stop
 done
-sudo xmlstarlet ed -L -u "//UrlBase" -v "sonarr" /home/$UNAME/.config/NzbDrone/config.xml
 
+sudo service sonarr stop
+sudo xmlstarlet ed -L -u "//UrlBase" -v "sonarr" /home/$UNAME/.config/NzbDrone/config.xml
 sudo service sonarr start
 
 
@@ -246,7 +238,7 @@ EOF
 sudo rm /etc/nginx/sites-enabled/default
 sudo rm /etc/nginx/sites-available/default
 
-sudo tee "/etc/nginx/sites-available/media" > /dev/null <<"EOF"
+sudo tee "/etc/nginx/sites-available/sites" > /dev/null <<"EOF"
 server {
   listen   80;
   server_name    _;
