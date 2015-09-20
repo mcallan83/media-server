@@ -187,7 +187,6 @@ do
   sudo service sonarr stop
 done
 
-sudo service sonarr stop
 sudo xmlstarlet ed -L -u "//UrlBase" -v "sonarr" /home/$UNAME/.config/NzbDrone/config.xml
 sudo service sonarr start
 
