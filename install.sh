@@ -141,6 +141,7 @@ exec mono /opt/jackett/JackettConsole.exe
 EOF
 sudo chmod +x /etc/init/jackett.conf
 
+sleep 10
 sudo service jackett start
 
 
