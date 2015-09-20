@@ -181,12 +181,14 @@ EOF
 sudo chmod +x /etc/init/sonarr.conf
 
 sudo service sonarr start
+# curl 127.0.0.1:8989
+
 sudo service sonarr stop
 
-while [ ! -f /home/$UNAME/.config/NzbDrone/config.xml ]
-do
-  sleep 2
-done
+# while [ ! -f /home/$UNAME/.config/NzbDrone/config.xml ]
+# do
+#   sleep 2
+# done
 sudo xmlstarlet ed -L -u "//UrlBase" -v "sonarr" /home/$UNAME/.config/NzbDrone/config.xml
 
 sudo service sonarr start
