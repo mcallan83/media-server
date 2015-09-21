@@ -1,8 +1,6 @@
 # Media Server Installer
 
-Bootstraps the installation of a complete media server with support for automatically downloading, managing, and streaming TV shows and movies.
-
-This script has been tested with Ubuntu Server. Installed applications are available via web based control panels.
+Bootstraps the installation of a complete media server with support for automatically downloading, managing, and streaming TV shows and movies.Installed applications are available via web based control panels.
 
 ## Included Software
 
@@ -15,7 +13,11 @@ This script has been tested with Ubuntu Server. Installed applications are avail
 
 ## Installation & Config
 
-Run `source <(curl -s https://raw.githubusercontent.com/mcallan83/media-server/master/install.sh)` on a fresh Ubuntu 14.04 Server install.
+Run the following command on a fresh install of Ubuntu Server 14.04.
+
+`source <(curl -s https://raw.githubusercontent.com/mcallan83/media-server/master/install.sh)`
+
+All applications will be created and owned by the user you install with and should auto-start on reboot. It is recommended to restart your server after installation.
 
 ## Web Access Ports
 
