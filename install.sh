@@ -151,11 +151,7 @@ exec mono /opt/jackett/JackettConsole.exe
 EOF
 sudo chmod +x /etc/init/jackett.conf
 
-while [ ! -f /home/$UNAME/.config/Jackett/ServerConfig.json ]
-do
-  sleep 10
-  sudo service jackett restart
-done
+sudo service jackett start
 
 
 ################################################################################
