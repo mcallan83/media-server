@@ -292,7 +292,6 @@ server {
   location /deluge {
     proxy_pass  http://127.0.0.1:8112/;
     proxy_set_header  X-Deluge-Base "/deluge/";
-    proxy_cookie_path / /deluge;
     include /etc/nginx/proxy.conf;
     include /etc/nginx/auth.conf;
   }
@@ -305,8 +304,8 @@ server {
   # ajenti
   location ~ /ajenti.* {
     proxy_pass http://127.0.0.1:8000;
-   rewrite (/ajenti)$ / break;
-   rewrite /ajenti/(.*) /$1 break;
+    rewrite (/ajenti)$ / break;
+    rewrite /ajenti/(.*) /$1 break;
     proxy_redirect / /ajenti/;
     proxy_set_header Host $host;
     proxy_set_header Origin http://$host;
@@ -332,6 +331,7 @@ server {
     subs_filter 'return url' 'return "http://"+window.location.hostname+":9117"+url';
     include /etc/nginx/auth.conf;
   }
+  # wetty (ssh)
   location /ssh {
     proxy_pass http://127.0.0.1:3000/wetty;
     proxy_http_version 1.1;
@@ -344,6 +344,7 @@ server {
     proxy_set_header X-NginX-Proxy true;
     include /etc/nginx/auth.conf;
   }
+  # couchpotato
   location /couchpotato {
     proxy_pass http://127.0.0.1:5050;
     include /etc/nginx/proxy.conf;
