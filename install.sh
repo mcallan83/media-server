@@ -317,7 +317,6 @@ server {
     include /etc/nginx/proxy.conf;
     rewrite ^/jackett$ $scheme://$http_host/jackett/Admin/Dashboard break;
     rewrite ^/jackett/(.*) /$1 break;
-    include /etc/nginx/auth.conf;
     subs_filter_types text/css application/javascript application/json;
     subs_filter 'src="/' 'src="/jackett/';
     subs_filter 'href="/' 'href="/jackett/';
