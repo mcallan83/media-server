@@ -90,7 +90,6 @@ sudo chmod +x /etc/init/couchpotato.conf
 
 sudo service couchpotato start
 
-
 while [ ! -f /home/$UNAME/.couchpotato/settings.conf ]
 do
   sleep 5
@@ -152,8 +151,11 @@ exec mono /opt/jackett/JackettConsole.exe
 EOF
 sudo chmod +x /etc/init/jackett.conf
 
-sleep 10
-sudo service jackett start
+while [ ! -f /home/$UNAME/.config/Jackett/ServerConfig.json ]
+do
+  sleep 10
+  sudo service jackett restart
+done
 
 
 ################################################################################
@@ -203,6 +205,26 @@ done
 sudo service sonarr stop
 sudo xmlstarlet ed -L -u "//UrlBase" -v "sonarr" /home/$UNAME/.config/NzbDrone/config.xml
 sudo service sonarr start
+
+
+################################################################################
+# Wetty
+################################################################################
+
+curl -sL https://deb.nodesource.com/setup | sudo bash -
+sudo apt-get install nodejs -y
+sudo npm install wetty -g
+
+sudo tee "/etc/init/wetty.conf" > /dev/null <<EOF
+description "Upstart Script: Wetty"
+start on started mountall
+stop on shutdown
+respawn
+respawn limit 20 5
+exec sudo -u root wetty -p 3000
+EOF
+
+sudo service wetty start
 
 
 ################################################################################
@@ -282,16 +304,17 @@ server {
   }
   # ajenti
   location ~ /ajenti.* {
-     proxy_pass http://127.0.0.1:8000;
-     rewrite (/ajenti)$ / break;
-     rewrite /ajenti/(.*) /$1 break;
-     proxy_redirect / /ajenti/;
-     proxy_set_header Host $host;
-     proxy_set_header Origin http://$host;
-     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-     proxy_http_version 1.1;
-     proxy_set_header Upgrade $http_upgrade;
-     proxy_set_header Connection $http_connection;
+    proxy_pass http://127.0.0.1:8000;
+   rewrite (/ajenti)$ / break;
+   rewrite /ajenti/(.*) /$1 break;
+    proxy_redirect / /ajenti/;
+    proxy_set_header Host $host;
+    proxy_set_header Origin http://$host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+    include /etc/nginx/auth.conf;
   }
   # jackett
   location ~ /jackett.* {
@@ -307,23 +330,24 @@ server {
     subs_filter '/admin/' '/jackett/admin/';
     subs_filter 'url = a.href;' '';
     subs_filter 'return url' 'return "http://"+window.location.hostname+":9117"+url';
+    include /etc/nginx/auth.conf;
   }
-  #
-  location /wetty {
-      proxy_pass http://127.0.0.1:3000/wetty;
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection "upgrade";
-      proxy_read_timeout 43200000;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header Host $http_host;
-      proxy_set_header X-NginX-Proxy true;
+  location /ssh {
+    proxy_pass http://127.0.0.1:3000/wetty;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_read_timeout 43200000;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-NginX-Proxy true;
+    include /etc/nginx/auth.conf;
   }
   location /couchpotato {
-      proxy_pass http://127.0.0.1:5050;
-      include /etc/nginx/proxy.conf;
-      include /etc/nginx/auth.conf;
+    proxy_pass http://127.0.0.1:5050;
+    include /etc/nginx/proxy.conf;
+    include /etc/nginx/auth.conf;
   }
 }
 EOF
@@ -335,23 +359,3 @@ cd $SCRIPTPATH
 sudo htpasswd -b -c /etc/nginx/htpasswd $UNAME $UPASS
 
 sudo service nginx restart
-
-
-################################################################################
-# Wetty
-################################################################################
-
-curl -sL https://deb.nodesource.com/setup | sudo bash -
-sudo apt-get install nodejs -y
-sudo npm install wetty -g
-
-sudo tee "/etc/init/wetty.conf" > /dev/null <<EOF
-description "Upstart Script: Wetty"
-start on started mountall
-stop on shutdown
-respawn
-respawn limit 20 5
-exec sudo -u root wetty -p 3000
-EOF
-
-sudo service wetty start
