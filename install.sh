@@ -281,7 +281,7 @@ server {
     if ($http_x_plex_device_name = '') {
       rewrite ^/$ http://$http_host/media-control;
     }
-    rewite ^/plex$ http://$http_host/web/index.html
+    rewite ^/plex$ http://$http_host/web/index.html;
     include /etc/nginx/proxy.conf;
     include /etc/nginx/auth.conf;
   }
