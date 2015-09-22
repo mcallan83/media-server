@@ -279,8 +279,9 @@ server {
   location / {
     proxy_pass http://127.0.0.1:32400;
     if ($http_x_plex_device_name = '') {
-      rewrite ^/$ http://$http_host/web/index.html;
+      rewrite ^/$ http://$http_host/media-control;
     }
+    rewite ^/plex$ http://$http_host/web/index.html
     include /etc/nginx/proxy.conf;
     include /etc/nginx/auth.conf;
   }
@@ -327,7 +328,7 @@ server {
     include /etc/nginx/auth.conf;
   }
   # wetty (ssh)
-  location /ssh {
+  location /wetty {
     proxy_pass http://127.0.0.1:3000/wetty;
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
