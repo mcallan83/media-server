@@ -158,10 +158,10 @@ sudo service jackett start
 # Media Control
 ################################################################################
 
-sudo mkdir /opt/media-control
-sudo chown -R $UNAME: /opt/media-control
+sudo mkdir /var/www/media-control
+sudo chown -R $UNAME: /var/www/media-control
 
-sudo tee "/opt/media-control/index.html" > /dev/null <<EOF
+sudo tee "/var/www/media-control/index.html" > /dev/null <<EOF
 <html>
   <head>
     <title>Media control</title>
@@ -374,7 +374,7 @@ server {
   }
   # media-control
   location /media-control {
-    root /opt/media-control;
+    root /var/www/;
     index index.htm index.html;
   }
 }
