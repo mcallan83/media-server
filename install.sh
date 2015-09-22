@@ -155,6 +155,32 @@ sudo service jackett start
 
 
 ################################################################################
+# Media Control
+################################################################################
+
+sudo mkdir /opt/media-control
+sudo chown -R $UNAME: /opt/media-control
+
+sudo tee "/opt/media-control/index.html" > /dev/null <<EOF
+<html>
+  <head>
+    <title>Media control</title>
+  </head>
+  <body>
+    <ul>
+      <li><a href="/ajenti">Ajenti</a></li>
+      <li><a href="/couchpotato">Couchpotato</a></li>
+      <li><a href="/deluge">Deluge</a></li>
+      <li><a href="/jackett">Jackett</a></li>
+      <li><a href="/plex">Plex</a></li>
+      <li><a href="/sonarr">Sonarr</a></li>
+      <li><a href="/wetty">Wetty (SSH)</a></li>
+    </ul>
+  </body>
+</html>
+EOF
+
+################################################################################
 # Plex
 ################################################################################
 
@@ -345,6 +371,11 @@ server {
     proxy_pass http://127.0.0.1:5050;
     include /etc/nginx/proxy.conf;
     include /etc/nginx/auth.conf;
+  }
+  # media-control
+  location /media-control {
+    root /opt/media-control;
+    index index.htm index.html;
   }
 }
 EOF
